@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Painting Recommendation</title>
+    <script>
+        function limitCheckboxes(groupName, maxChecked) {
+            let checkboxes = document.querySelectorAll(`input[name="${groupName}"]:checked`);
+            if (checkboxes.length > maxChecked) {
+                alert(`You can only select up to ${maxChecked} colors.`);
+                // 체크박스를 해제하려면 아래 코드를 사용하세요.
+                checkboxes[checkboxes.length-1].checked = false;
+                return false;
+            }
+            return true;
+        }
+
+        function validateForm() {
+            if (!limitCheckboxes('liked_colors', 3)) return false;
+            return true;
+        }
+    </script>
+</head>
+<body>
+    <h1>Welcome to the MuseVRium!!</h1>
+    <form action="/recommend_painting" method="post" onsubmit="return validateForm();">
+        <h2>Select your preferred colors:</h2>
+        <table>
+            {% set counter = 0 %}
+            <tr>
+            {% for color in preferred_colors %}
+                {% if counter != 0 and counter % 6 == 0 %}
+            </tr>
+            <tr>
+                {% endif %}
+                <td>
+                    <input type="checkbox" id="{{ color }}" name="liked_colors" value="{{ color }}" onclick="limitCheckboxes('liked_colors', 3)">
+                    <label for="{{ color }}"><img src="{{ url_for('static', filename='main_colors/' + color) }}" alt="{{ color }}" width="50"></label>
+                </td>
+                {% set counter = counter + 1 %}
+            {% endfor %}
+            </tr>
+        </table>
+
+        <h2>Select your disliked color:</h2>
+        {% for color in disliked_colors %}
+            <input type="radio" id="{{ color }}" name="disliked_color" value="{{ color }}" required>
+            <label for="{{ color }}"><img src="{{ url_for('static', filename='least_used_colors/' + color) }}" alt="{{ color }}" width="50"></label>
+        {% endfor %}
+
+        <br>
+        <input type="submit" value="Submit">
+    </form>
+</body>
+</html>
+
+
+
+
+
+
