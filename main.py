@@ -39,7 +39,7 @@ def compare_paintings_with_user_choice(paintings_colors, user_liked_colors, user
 
 @app.route('/')
 def start():
-    return render_template('start.html')
+    return render_template('index.html')
 
 
 @app.route('/select')
